@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies/core/utils/strings.dart';
+import 'package:movies/core/utils/values.dart';
 
-import '../components/now_playing_component.dart';
-import '../components/see_more_component.dart';
-import '../components/top_rates_component.dart';
+import 'popular_movies_screen.dart';
+import 'top_rated_movies_screen.dart';
+import '../components/movies/see_more_component.dart';
+import '../components/movies/top_rates_component.dart';
+import '../components/movies/now_playing_component.dart';
 import '../controller/movies_events.dart';
 import '../../../core/services/service_locator.dart';
-import '../components/popular_component.dart';
+import '../components/movies/popular_component.dart';
 import '../controller/movies_bloc.dart';
 
-class MainMoviesScreen extends StatelessWidget {
-  const MainMoviesScreen({Key? key}) : super(key: key);
+class MoviesScreen extends StatelessWidget {
+  const MoviesScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +22,8 @@ class MainMoviesScreen extends StatelessWidget {
       create: (context) => sl<MoviesBloc>()
         ..add(GetNowPlayingMoviesEvent())
         ..add(GetPopularMoviesEvent())
-        ..add(GetTopRatesMoviesEvent()
-        ),
+        ..add(GetTopRatesMoviesEvent()),
       child: Scaffold(
-        backgroundColor: Colors.grey.shade800,
         body: SingleChildScrollView(
           key: const Key('movieScrollView'),
           child: Column(
@@ -29,18 +31,27 @@ class MainMoviesScreen extends StatelessWidget {
             children: [
               const NowPlayingComponent(),
               SeeMoreComponent(
-                  title: "Popular",
+                  title: AppString.popular,
                   onTap: () {
-                    /// TODO : NAVIGATION TO POPULAR SCREEN
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const PopularMoviesScreen(),
+                        ));
                   }),
               const PopularComponent(),
               SeeMoreComponent(
-                  title: 'Top Rated',
+                  title: AppString.topRated,
                   onTap: () {
-                    /// TODO : NAVIGATION TO Top Rated Movies Screen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const TopRatedMoviesScreen(),
+                      ),
+                    );
                   }),
               const TopRatedComponent(),
-              const SizedBox(height: 50.0),
+              const SizedBox(height: AppSize.s50),
             ],
           ),
         ),

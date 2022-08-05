@@ -2,12 +2,15 @@ import 'package:animate_do/animate_do.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies/core/global/theme/colors/app_color.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../core/network/api_constance.dart';
-import '../../../core/utils/enums.dart';
-import '../controller/movies_bloc.dart';
-import '../controller/movies_state.dart';
+import '../../../../core/utils/values.dart';
+import '../../screen/movie_detail_screen.dart';
+import '../../../../core/network/api_constance.dart';
+import '../../../../core/utils/enums.dart';
+import '../../controller/movies_bloc.dart';
+import '../../controller/movies_state.dart';
 
 class TopRatedComponent extends StatelessWidget {
   const TopRatedComponent({Key? key}) : super(key: key);
@@ -18,51 +21,58 @@ class TopRatedComponent extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.topRatedState != current.topRatedState,
       builder: (context, state) {
-        switch(state.topRatedState){
+        switch (state.topRatedState) {
           case RequestState.loading:
-            return const SizedBox(
-              height: 170,
-              child: Center(child: CircularProgressIndicator(),),
+            return SizedBox(
+              height: AppSize.s170,
+              child: Center(
+                child: Center(child: CircularProgressIndicator(color: AppColor.lightGrey),),
+              ),
             );
           case RequestState.loaded:
             return FadeIn(
-              duration: const Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: AppDuration.d500),
               child: SizedBox(
                 height: 170.0,
                 child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
                   itemCount: state.topRatedMovies.length,
                   itemBuilder: (context, index) {
                     final movie = state.topRatedMovies[index];
                     return Container(
-                      padding: const EdgeInsets.only(right: 8.0),
+                      padding: const EdgeInsets.only(right: AppPadding.p8),
                       child: InkWell(
                         onTap: () {
-                          /// TODO : NAVIGATE TO  MOVIE DETAILS
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => MovieDetailScreen(id: movie.id),
+                            ),
+                          );
                         },
                         child: ClipRRect(
                           borderRadius:
-                          const BorderRadius.all(Radius.circular(8.0)),
+                              const BorderRadius.all(Radius.circular(AppSize.s8)),
                           child: CachedNetworkImage(
-                            width: 120.0,
+                            width: AppSize.s120,
                             fit: BoxFit.cover,
                             imageUrl: ApiConstance.imageUrl(movie.backdropPath),
                             placeholder: (context, url) => Shimmer.fromColors(
-                              baseColor: Colors.grey[850]!,
-                              highlightColor: Colors.grey[800]!,
+                              baseColor: AppColor.greyShimmer,
+                              highlightColor: AppColor.lightGreyShimmer,
                               child: Container(
-                                height: 170.0,
-                                width: 120.0,
+                                height: AppSize.s170,
+                                width: AppSize.s120,
                                 decoration: BoxDecoration(
                                   color: Colors.black,
-                                  borderRadius: BorderRadius.circular(8.0),
+                                  borderRadius: BorderRadius.circular(AppSize.s8),
                                 ),
                               ),
                             ),
                             errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                                const Icon(Icons.error),
                           ),
                         ),
                       ),
@@ -73,11 +83,10 @@ class TopRatedComponent extends StatelessWidget {
             );
           case RequestState.error:
             return SizedBox(
-              height: 140,
+              height: AppSize.s140,
               child: Center(child: Text(state.topRatedMessage)),
             );
         }
-
       },
     );
   }
