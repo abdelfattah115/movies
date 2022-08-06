@@ -1,12 +1,12 @@
-import 'package:animate_do/animate_do.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:movies/core/global/theme/colors/app_color.dart';
 
+import '../../../core/global/theme/colors/app_color.dart';
 import '../../../core/utils/strings.dart';
 import '../../../core/utils/values.dart';
+import '../components/see_more_movies/movie_details_component.dart';
+import '../components/see_more_movies/movie_image.dart';
 import '../controller/movies_events.dart';
 import '../../../core/network/api_constance.dart';
 import '../../../core/services/service_locator.dart';
@@ -32,7 +32,7 @@ class TopRatedMoviesScreen extends StatelessWidget {
             ),
           ),
           centerTitle: true,
-          elevation: 0.0,
+          elevation: AppSize.s0,
           backgroundColor: AppColor.darkGrey,
         ),
         body: BlocBuilder<MoviesBloc, MoviesState>(
@@ -50,125 +50,23 @@ class TopRatedMoviesScreen extends StatelessWidget {
                     final movie = state.topRatedMovies[index];
                     return SizedBox(
                       width: double.infinity,
-                      height: 180,
+                      height: AppSize.s180,
                       child: Card(
                         clipBehavior: Clip.antiAliasWithSaveLayer,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(AppSize.s10),
                           side: BorderSide.none,
                         ),
                         child: Row(
                           children: [
-                            Expanded(
-                              flex: 1,
-                              child: FadeInUp(
-                                from: 20,
-                                duration: const Duration(milliseconds: 500),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5),
-                                  child: AspectRatio(
-                                    aspectRatio: 0.5,
-                                    child: ClipRRect(
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(10)),
-                                      child: CachedNetworkImage(
-                                        imageUrl: ApiConstance.imageUrl(movie.backdropPath),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                            MovieImageComponent(
+                              imageUrl: ApiConstance.imageUrl(movie.backdropPath),
                             ),
-                            Expanded(
-                              flex: 2,
-                              child: FadeInUp(
-                                from: 20,
-                                duration: const Duration(milliseconds: 500),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 20,),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(movie.title,
-                                          style: GoogleFonts.poppins(
-                                            textStyle: const TextStyle(
-                                              overflow: TextOverflow.ellipsis,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                            letterSpacing: 0.9,
-                                          )),
-                                      const SizedBox(height: 8.0),
-                                      Row(
-                                        children: [
-                                          Container(
-                                            padding:
-                                                const EdgeInsets.symmetric(
-                                              vertical: 2.0,
-                                              horizontal: 8.0,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: Colors.redAccent,
-                                              borderRadius:
-                                                  BorderRadius.circular(4.0),
-                                            ),
-                                            child: Text(
-                                              movie.releaseDate.split('-')[0],
-                                              style: const TextStyle(
-                                                fontSize: 16.0,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 16.0),
-                                          Row(
-                                            children: [
-                                              const Icon(
-                                                Icons.star,
-                                                color: Colors.amber,
-                                                size: 20.0,
-                                              ),
-                                              const SizedBox(width: 4.0),
-                                              Text(
-                                                (movie.voteAverage / 2)
-                                                    .toStringAsFixed(1),
-                                                style: const TextStyle(
-                                                  fontSize: 16.0,
-                                                  fontWeight: FontWeight.w500,
-                                                  letterSpacing: 1.2,
-                                                ),
-                                              ),
-                                              const SizedBox(width: 4.0),
-                                              Text(
-                                                '(${movie.voteAverage})',
-                                                style: const TextStyle(
-                                                  fontSize: 1.0,
-                                                  fontWeight: FontWeight.w500,
-                                                  letterSpacing: 1.2,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 20.0),
-                                      Text(
-                                        movie.overview,
-                                        maxLines: 2,
-                                        style: const TextStyle(
-                                          overflow: TextOverflow.ellipsis,
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.w400,
-                                          letterSpacing: 1.2,
-                                          height: 1.4,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                            MovieDetailsComponent(
+                              movieTitle: movie.title,
+                              releaseDate: movie.releaseDate,
+                              voteAverage: (movie.voteAverage / 2).toStringAsFixed(1),
+                              overview: movie.overview,
                             ),
                           ],
                         ),

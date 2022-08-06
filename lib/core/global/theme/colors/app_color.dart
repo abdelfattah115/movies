@@ -9,4 +9,5 @@ class AppColor {
    static const Color redAccent = Color(0xFFFF5252);
    static Color greyShimmer = Colors.grey[850]!;
    static const Color lightGreyShimmer = Color(0xFF424242);
+   static const Color amber = Color(0xFFFFC107);
 }
