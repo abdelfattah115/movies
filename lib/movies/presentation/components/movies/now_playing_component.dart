@@ -1,8 +1,13 @@
+import 'dart:ffi';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:movies/core/utils/media_query_values.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/global/theme/colors/app_color.dart';
 import '../../../../core/utils/values.dart';
@@ -25,9 +30,18 @@ class NowPlayingComponent extends StatelessWidget {
         switch (state.nowPlayingState) {
           case RequestState.loading:
             return SizedBox(
-              height: AppSize.s400,
-              child: Center(
-                child: CircularProgressIndicator(color: AppColor.lightGrey),
+              height: context.height,
+              child: Shimmer.fromColors(
+                baseColor: AppColor.greyShimmer,
+                highlightColor: AppColor.lightGreyShimmer,
+                child: Container(
+                  height: context.height,
+                  width: context.width,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(AppSize.s8),
+                  ),
+                ),
               ),
             );
           case RequestState.loaded:
@@ -35,7 +49,7 @@ class NowPlayingComponent extends StatelessWidget {
               duration: const Duration(milliseconds: AppDuration.d500),
               child: CarouselSlider(
                 options: CarouselOptions(
-                  height: AppSize.s400,
+                  height: context.height * 0.5,
                   viewportFraction: AppPadding.p1,
                   onPageChanged: (index, reason) {},
                 ),

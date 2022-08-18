@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/global/theme/colors/app_color.dart';
@@ -40,7 +41,7 @@ class TopRatedMoviesScreen extends StatelessWidget {
             switch (state.topRatedState) {
               case RequestState.loading:
                 return Center(
-                  child: Center(child: CircularProgressIndicator(color: AppColor.lightGrey),),
+                  child: Center(child: SpinKitFadingCircle(color: AppColor.lightGrey),),
                 );
               case RequestState.loaded:
                 return ListView.builder(

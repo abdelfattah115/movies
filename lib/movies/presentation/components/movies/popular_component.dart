@@ -2,6 +2,8 @@ import 'package:animate_do/animate_do.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:movies/core/utils/media_query_values.dart';
 import 'package:movies/core/utils/values.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -23,21 +25,12 @@ class PopularComponent extends StatelessWidget {
       builder: (context, state) {
         switch (state.popularState) {
           case RequestState.loading:
-            return SizedBox(
-              height: AppSize.s170,
-              child: Center(
-                child: Center(
-                  child: CircularProgressIndicator(
-                    color: AppColor.lightGrey,
-                  ),
-                ),
-              ),
-            );
+            return  Container();
           case RequestState.loaded:
             return FadeIn(
               duration: const Duration(milliseconds: AppDuration.d500),
               child: SizedBox(
-                height: AppSize.s170,
+                height: context.height * 0.24,
                 child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,

@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movies/core/global/theme/colors/app_color.dart';
 
@@ -27,7 +28,7 @@ class MovieDetailScreen extends StatelessWidget {
           builder: (context, state) {
             switch(state.movieDetailState){
               case RequestState.loading:
-                return Center(child: CircularProgressIndicator(color: Colors.grey.shade400,),);
+                return Center(child: SpinKitFadingCircle(color: Colors.grey.shade400,),);
               case RequestState.loaded:
                 return CustomScrollView(
                   key: const Key('movieDetailScrollView'),
